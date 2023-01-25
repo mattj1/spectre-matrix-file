@@ -115,8 +115,6 @@ namespace MatrixFile {
                 mat->difficulties.push_back(d);
             }
         }
-        fclose(f);
-
         return mat;
     }
 }

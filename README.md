@@ -1,2 +1,7 @@
 # spectre-matrix-file
-Loader for the Spectre VR .MAT file
+Loader for Spectre VR .MAT files
+
+Supports
+- wrld (maps)
+- enem (enemy sets)
+- wave (levels)
