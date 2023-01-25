@@ -34,7 +34,7 @@ namespace MatrixFile {
         fseek(f, 4, SEEK_SET);
 
         int num_entries = read_short(f);
-        printf("Num entries: %d\n", num_entries);
+//        printf("Num entries: %d\n", num_entries);
 
         for (int i = 0; i < num_entries; i++) {
             entry_t entry;
@@ -47,7 +47,7 @@ namespace MatrixFile {
             fseek(f, 2, SEEK_CUR);
             entry.length = read_short(f);
 
-            printf("Entry %s %d %d %d\n", entry.entry_type, entry.entry_id, entry.offset, entry.length);
+//            printf("Entry %s %d %d %d\n", entry.entry_type, entry.entry_id, entry.offset, entry.length);
 
             entries.push_back(entry);
         }
