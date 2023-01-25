@@ -14,59 +14,58 @@
 
 namespace MatrixFile {
 
-class MatMapObject {
-public:
-    short x, y, obj_type, angle;
-};
+    class MatMapObject {
+    public:
+        short x, y, obj_type, angle;
+    };
 
-class MatEnemySetEntry {
-public:
-    unsigned short enemyType;
-    unsigned short minAtStart;
-    unsigned short maxAtStart;
-    unsigned short regen;
-};
+    class MatEnemySetEntry {
+    public:
+        unsigned short enemyType;
+        unsigned short minAtStart;
+        unsigned short maxAtStart;
+        unsigned short regen;
+    };
 
-class MatEnemySet {
-public:
-    int id;
-    std::vector<MatEnemySetEntry> entries;
-};
+    class MatEnemySet {
+    public:
+        int id;
+        std::vector <MatEnemySetEntry> entries;
+    };
 
-class MatMap {
-public:
-    int id;
-    std::vector<MatMapObject> objects;
-};
+    class MatMap {
+    public:
+        int id;
+        std::vector <MatMapObject> objects;
+    };
 
-class MatLevel {
-public:
-    unsigned short mapId;
-    unsigned short enemySetId;
-    unsigned short weaponActivate;
-    unsigned short enemyDataSetId;
-    unsigned short caption;
-    unsigned short songId;
-};
+    class MatLevel {
+    public:
+        unsigned short mapId;
+        unsigned short enemySetId;
+        unsigned short weaponActivate;
+        unsigned short enemyDataSetId;
+        unsigned short caption;
+        unsigned short songId;
+    };
 
-class MatDifficulty {
-    
-public:
-    std::vector<MatLevel> levels;
-};
+    class MatDifficulty {
+
+    public:
+        std::vector <MatLevel> levels;
+    };
 
 
+    class MatFile {
 
-class MatFile {
-    
-public:
+    public:
 
-    std::vector<MatMap> maps;
-    std::vector<MatEnemySet> enemySets;
-    std::vector<MatDifficulty> difficulties;
-};
+        std::vector <MatMap> maps;
+        std::vector <MatEnemySet> enemySets;
+        std::vector <MatDifficulty> difficulties;
+    };
 
-MatFile *LoadFromFile(FILE *f);
+    MatFile *LoadFromFile(FILE *f);
 
 }
 
