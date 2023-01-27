@@ -17,6 +17,19 @@ static int read_short(FILE *f) {
     return val;
 }
 
+static MatrixFile::MatModelVert read_vertex(FILE *f) {
+   
+    MatrixFile::MatModelVert vert;
+    vert.x = read_short(f);
+    read_short(f);
+    vert.y = read_short(f);
+    read_short(f);
+    vert.z = read_short(f);
+    read_short(f);
+    
+    return vert;
+}
+
 struct entry_t {
     char entry_type[5];
     short entry_id;
@@ -114,6 +127,89 @@ namespace MatrixFile {
 
                 mat->difficulties.push_back(d);
             }
+            
+            if(!strcmp(it->entry_type, "shap")) {
+                MatrixFile::MatModel model;
+                model.id = entry.entry_id;
+                
+                int num_verts = read_short(f) + 1;
+                
+                for(int i = 0; i < num_verts; i++) {
+                    MatrixFile::MatModelVert vert = read_vertex(f);
+                    model.verts.push_back(vert);
+                }
+                
+                int num_faces = read_short(f) + 1;
+                
+                for(int i = 0; i < num_faces; i++) {
+                    MatrixFile::MatModelFace face;
+                    
+                    int num_elements = read_short(f) + 1;
+                    
+                    for(int i = 0; i < num_elements; i++) {
+                        unsigned short vertIndex = read_short(f) - 1;
+                        face.vertIndices.push_back(vertIndex);
+                    }
+                    
+                    face.flags = read_short(f);
+                    
+                    model.faces.push_back(face);
+                }
+                
+                // Read footprint
+                
+                num_verts = read_short(f) + 1;
+                
+                for(int i = 0; i < num_verts; i++) {
+                    MatrixFile::MatModelVert vert = read_vertex(f);
+                    model.footprintVerts.push_back(vert);
+                }
+                
+                int num_footprint_edges = read_short(f) + 1;
+                
+                for(int i = 0; i < num_footprint_edges; i++) {
+                    MatrixFile::MatModelFootprintEdge edge;
+                    edge.verts[0] = read_short(f) - 1;
+                    edge.verts[1] = read_short(f) - 1;
+                    model.footprintEdges.push_back(edge);
+                }
+                
+                mat->models.push_back(model);
+            }
+            
+            if(!strcmp(it->entry_type, "rshp")) {
+                MatModelVariations variations;
+                
+                int numVariations = read_short(f);
+                
+                for(int i = 0; i < numVariations; i++) {
+                    variations.modelIDs.push_back(read_short(f));
+                }
+                
+                mat->modelVariations.push_back(variations);
+            }
+            
+            if(!strcmp(it->entry_type, "mshp")) {
+                MatCompoundModel model;
+                model.id = entry.entry_id;
+                
+                int numModels = read_short(f);
+                
+                for(int i = 0; i < numModels; i++) {
+                    MatrixFile::MatCompoundModelElement element;
+                    element.modelId = read_short(f);
+                    
+                    for(int j = 0; j < 3; j++) {
+                        element.offset[j] = read_short(f);
+                    }
+                    
+                    model.elements.push_back(element);
+                }
+                
+                
+                mat->compoundModels.push_back(model);
+            }
+            
         }
         return mat;
     }
